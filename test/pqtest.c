@@ -1,4 +1,4 @@
-#include "pq.h"
+#include "../pq.h"
 #include <stdbool.h>
 #include <stdio.h>
 
