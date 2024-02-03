@@ -16,6 +16,7 @@ static void pq_bubble_up(PriorityQueue *pq, size_t pos);
 static void pq_bubble_down(PriorityQueue *pq, size_t pos);
 
 PriorityQueue *pq_create(void);
+PriorityQueue *pq_from_array(int *nums, size_t count);
 int pq_insert(PriorityQueue *pq, int elem);
 int pq_top(PriorityQueue *pq);
 int pq_pop(PriorityQueue *pq);
@@ -30,6 +31,21 @@ PriorityQueue *pq_create(void) {
   memset(pq->elems, 0, sizeof(int));
   return pq;
 }
+
+PriorityQueue *pq_from_array(int *nums, size_t count){
+    PriorityQueue *pq = pq_create();
+    if (!pq) return pq;
+    if (PQ_SIZE < count) {
+        pq_destroy(pq);
+        return NULL;
+    };
+
+    size_t i = 0;
+    pq->n = count;
+    for (; i < count; i++) pq->elems[i+1] = nums[i];
+    for (i = pq->n/2; i >= 1; i--) pq_bubble_down(pq, i);
+    return pq;
+};
 
 int pq_insert(PriorityQueue *pq, int elem) {
   if (pq->n >= PQ_SIZE)
@@ -103,5 +119,23 @@ static void pq_bubble_down(PriorityQueue *pq, size_t pos) {
   if (minIdx != pos) {
     pq_swap(pq, pos, minIdx);
     pq_bubble_down(pq, minIdx);
+  }
+}
+
+int main(void) {
+//   PriorityQueue *pq = pq_create();
+
+//  int count = 10;
+
+//  while (count){
+//     pq_insert(pq, count);
+//     assert(pq_top(pq) == count);
+//     count--;
+//  }
+
+  int nums[] = {5,4,3,2,1,9,7,8};
+   PriorityQueue *pq = pq_from_array(nums, 8);
+  while (pq_size(pq)){
+    printf("%d\n", pq_pop(pq));
   }
 }
